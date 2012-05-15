@@ -86,7 +86,7 @@
 				<configuration>
 					<instructions>
 						<Export-Package>io.insideout.wordlift.domain,io.insideout.wordlift.endpoint</Export-Package>
-						<Private-Package>com.sun.jersey.api.client.*,com.sun.jersey.client.*,com.sun.ws.rs.ext,io.insideout.wordlift.endpoint.services</Private-Package>
+						<Private-Package>com.sun.jersey.api.client.*,com.sun.jersey.client.*,com.sun.ws.rs.ext,io.insideout.wordlift.endpoint.services,org.codehaus.jackson.*</Private-Package>
 						<!-- <Private-Package>org.objectweb.asm.*,com.esotericsoftware.*,org.codehaus.jackson.*,com.sun.jersey.*</Private-Package> -->
 						<!-- <Bundle-Activator>io.insideout.wordlift.osgi.SimpleActivator</Bundle-Activator> -->
 					</instructions>
