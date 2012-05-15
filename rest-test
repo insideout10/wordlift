@@ -1,0 +1,1 @@
+curl --data @body.json -X POST -H "Content-Type: application/json" -H "Accept: application/json" http://stanbol-01.insideout.io/wordlift/enhance/text/
