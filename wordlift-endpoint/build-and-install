@@ -1,0 +1,1 @@
+mvn install -DskipTests -PinstallBundle -Dsling.url=http://localhost:8081/system/console -o

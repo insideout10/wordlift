@@ -1,0 +1,1 @@
+cd ../keywords-data && mvn clean install && cd - && ./build-and-install

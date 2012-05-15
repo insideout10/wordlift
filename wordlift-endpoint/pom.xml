@@ -1,0 +1,183 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>wordlift-parent</artifactId>
+		<groupId>io.insideout.wordlift</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../wordlift-parent</relativePath>
+	</parent>
+
+	<artifactId>wordlift-endpoint</artifactId>
+	<name>InSideOut10 WordLift End-Point</name>
+	<description>InSideOut10 WordLift End-Point</description>
+	<packaging>bundle</packaging>
+
+	<properties>
+		<stanbol-version>0.10.0-incubating-SNAPSHOT</stanbol-version>
+		<clerezza-rdf-ontologies-version>0.11-incubating-SNAPSHOT</clerezza-rdf-ontologies-version>
+		<clerezza-rdf-utils-version>0.13-incubating-SNAPSHOT</clerezza-rdf-utils-version>
+		<jersey-version>1.12</jersey-version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>io.insideout.wordlift</groupId>
+			<artifactId>wordlift-data</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.osgi.core</artifactId>
+			<version>1.4.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.apache.felix.scr.annotations</artifactId>
+			<version>1.6.0</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.apache.stanbol</groupId>
+			<artifactId>org.apache.stanbol.enhancer.servicesapi</artifactId>
+			<version>${stanbol-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.stanbol</groupId>
+			<artifactId>org.apache.stanbol.commons.web.base</artifactId>
+			<version>${stanbol-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.stanbol</groupId>
+			<artifactId>org.apache.stanbol.enhancer.core</artifactId>
+			<version>${stanbol-version}</version>
+		</dependency>
+
+		<!-- Apache Clerezza and runtime dependencies -->
+		<dependency>
+			<groupId>org.apache.clerezza</groupId>
+			<artifactId>rdf.utils</artifactId>
+			<version>${clerezza-rdf-utils-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.clerezza</groupId>
+			<artifactId>rdf.ontologies</artifactId>
+			<version>${clerezza-rdf-ontologies-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>${jersey-version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Export-Package>io.insideout.wordlift.domain,io.insideout.wordlift.endpoint</Export-Package>
+						<Private-Package>com.sun.jersey.api.client.*,com.sun.jersey.client.*,com.sun.ws.rs.ext,io.insideout.wordlift.endpoint.services</Private-Package>
+						<!-- <Private-Package>org.objectweb.asm.*,com.esotericsoftware.*,org.codehaus.jackson.*,com.sun.jersey.*</Private-Package> -->
+						<!-- <Bundle-Activator>io.insideout.wordlift.osgi.SimpleActivator</Bundle-Activator> -->
+					</instructions>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-scr-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-scr-scrdescriptor</id>
+						<goals>
+							<goal>scr</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.felix
+										</groupId>
+										<artifactId>
+											maven-scr-plugin
+										</artifactId>
+										<versionRange>
+											[1.7.4,)
+										</versionRange>
+										<goals>
+											<goal>scr</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>clojars.org</id>
+			<url>http://clojars.org/repo</url>
+		</repository>
+	</repositories>
+
+	<profiles>
+		<profile>
+			<!-- This profile allows for installing/updating a bundle in a running 
+				Stanbol instance right after building it. Example: mvn clean install -P installBundle 
+				-Dsling.url=http://localhost:8080/system/console Or, to make it faster without 
+				cleaning up or running tests: mvn -o install -DskipTests -P installBundle 
+				-Dsling.url=http://localhost:8080/system/console -->
+			<id>installBundle</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.sling</groupId>
+						<artifactId>maven-sling-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>install-bundle</id>
+								<goals>
+									<goal>install</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+</project>
